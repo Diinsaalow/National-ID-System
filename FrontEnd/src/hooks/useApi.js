@@ -36,7 +36,7 @@ export const useApi = () => {
       return await handleResponse(response)
     } catch (error) {
       console.error('GET request error:', error)
-      toast.error('❌ Network error. Please try again.')
+      toast.error(' Network error. Please try again.')
       return { success: false, message: 'Network error' }
     }
   }
@@ -57,7 +57,7 @@ export const useApi = () => {
       return await handleResponse(response)
     } catch (error) {
       console.error('POST request error:', error)
-      toast.error('❌ Network error. Please try again.')
+      toast.error(' Network error. Please try again.')
       return { success: false, message: 'Network error' }
     }
   }
@@ -78,7 +78,7 @@ export const useApi = () => {
       return await handleResponse(response)
     } catch (error) {
       console.error('PUT request error:', error)
-      toast.error('❌ Network error. Please try again.')
+      toast.error(' Network error. Please try again.')
       return { success: false, message: 'Network error' }
     }
   }
@@ -99,7 +99,7 @@ export const useApi = () => {
       return await handleResponse(response)
     } catch (error) {
       console.error('PATCH request error:', error)
-      toast.error('❌ Network error. Please try again.')
+      toast.error(' Network error. Please try again.')
       return { success: false, message: 'Network error' }
     }
   }
@@ -119,7 +119,7 @@ export const useApi = () => {
       return await handleResponse(response)
     } catch (error) {
       console.error('DELETE request error:', error)
-      toast.error('❌ Network error. Please try again.')
+      toast.error(' Network error. Please try again.')
       return { success: false, message: 'Network error' }
     }
   }
@@ -140,7 +140,7 @@ export const useApi = () => {
       return await handleResponse(response)
     } catch (error) {
       console.error('File upload error:', error)
-      toast.error('❌ Upload failed. Please try again.')
+      toast.error(' Upload failed. Please try again.')
       return { success: false, message: 'Upload failed' }
     }
   }

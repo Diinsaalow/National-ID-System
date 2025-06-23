@@ -15,7 +15,7 @@ const testRegistration = async () => {
       }
     )
 
-    console.log('✅ Connected to MongoDB')
+    console.log(' Connected to MongoDB')
 
     // Test data
     const testData = {
@@ -33,11 +33,11 @@ const testRegistration = async () => {
     try {
       const hashedPassword = await hashPassword(testData.password)
       console.log(
-        '✅ Password hashed successfully:',
+        ' Password hashed successfully:',
         hashedPassword.substring(0, 20) + '...'
       )
     } catch (error) {
-      console.error('❌ Password hashing failed:', error.message)
+      console.error(' Password hashing failed:', error.message)
       return
     }
 
@@ -54,22 +54,22 @@ const testRegistration = async () => {
       })
 
       await user.save()
-      console.log('✅ User created successfully:', user.username)
+      console.log(' User created successfully:', user.username)
     } catch (error) {
-      console.error('❌ User creation failed:', error.message)
+      console.error(' User creation failed:', error.message)
       return
     }
 
     // Clean up
     await User.deleteOne({ email: testData.email })
-    console.log('✅ Test user cleaned up')
+    console.log(' Test user cleaned up')
 
     console.log('\n🎉 Registration test completed successfully!')
   } catch (error) {
-    console.error('❌ Test error:', error)
+    console.error(' Test error:', error)
   } finally {
     await mongoose.disconnect()
-    console.log('✅ Disconnected from MongoDB')
+    console.log(' Disconnected from MongoDB')
   }
 }
 

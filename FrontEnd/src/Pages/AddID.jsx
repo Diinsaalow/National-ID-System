@@ -77,21 +77,19 @@ export default function AddID() {
     const age = today.getFullYear() - birthDate.getFullYear()
 
     if (age < 15) {
-      toast.error('❌ User must be older than 15 years')
+      toast.error(' User must be older than 15 years')
       return false
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(formData.email)) {
-      toast.error('❌ Enter a valid email')
+      toast.error(' Enter a valid email')
       return false
     }
 
     const expYear = issueDate.getFullYear() + 10
     if (expDate.getFullYear() !== expYear) {
-      toast.error(
-        `❌ Expiry date must be 10 years after issue date (${expYear})`
-      )
+      toast.error(` Expiry date must be 10 years after issue date (${expYear})`)
       return false
     }
 
@@ -103,7 +101,7 @@ export default function AddID() {
     if (!validateForm()) return
     try {
       await axios.post('/api/ids', formData)
-      toast.success('✅ ID submitted successfully')
+      toast.success(' ID submitted successfully')
       setFormData({
         idNumber: '',
         fullName: '',
@@ -121,7 +119,7 @@ export default function AddID() {
       })
     } catch (err) {
       toast.error(
-        '❌ Submission failed: ' + (err.response?.data?.message || err.message)
+        ' Submission failed: ' + (err.response?.data?.message || err.message)
       )
     }
   }

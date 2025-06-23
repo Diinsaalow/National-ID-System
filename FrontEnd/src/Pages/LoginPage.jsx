@@ -48,7 +48,7 @@ function LoginPage() {
 
     if (!navigator.onLine) {
       setIsSuccess(false)
-      setMessage('❌ Please connect to the Internet.')
+      setMessage(' Please connect to the Internet.')
       return
     }
 
@@ -60,17 +60,17 @@ function LoginPage() {
 
       if (result.success) {
         setIsSuccess(true)
-        setMessage('✅ ' + result.message)
+        setMessage(' ' + result.message)
         setTimeout(() => {
           navigate('/dashboard')
         }, 2000)
       } else {
         setIsSuccess(false)
-        setMessage('❌ ' + result.message)
+        setMessage(' ' + result.message)
       }
     } catch (error) {
       setIsSuccess(false)
-      setMessage('❌ Something went wrong.')
+      setMessage(' Something went wrong.')
     } finally {
       setIsLoading(false)
     }

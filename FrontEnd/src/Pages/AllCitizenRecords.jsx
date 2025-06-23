@@ -17,7 +17,7 @@ const AllCitizenRecords = () => {
         ])
         setCitizens([...idRes.data, ...birthRes.data])
       } catch (err) {
-        console.error('❌ Error fetching data:', err)
+        console.error(' Error fetching data:', err)
       }
     }
     fetchData()

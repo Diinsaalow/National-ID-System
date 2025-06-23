@@ -68,32 +68,32 @@ function RegisterPage() {
       !formData.confirmPassword ||
       !formData.fullName
     ) {
-      setMessage('❌ All fields are required')
+      setMessage(' All fields are required')
       setIsSuccess(false)
       return false
     }
 
     if (formData.username.length < 3) {
-      setMessage('❌ Username must be at least 3 characters long')
+      setMessage(' Username must be at least 3 characters long')
       setIsSuccess(false)
       return false
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(formData.email)) {
-      setMessage('❌ Please enter a valid email address')
+      setMessage(' Please enter a valid email address')
       setIsSuccess(false)
       return false
     }
 
     if (formData.password.length < 6) {
-      setMessage('❌ Password must be at least 6 characters long')
+      setMessage(' Password must be at least 6 characters long')
       setIsSuccess(false)
       return false
     }
 
     if (formData.password !== formData.confirmPassword) {
-      setMessage('❌ Passwords do not match')
+      setMessage(' Passwords do not match')
       setIsSuccess(false)
       return false
     }
@@ -106,7 +106,7 @@ function RegisterPage() {
 
     if (!navigator.onLine) {
       setIsSuccess(false)
-      setMessage('❌ Please connect to the Internet.')
+      setMessage(' Please connect to the Internet.')
       return
     }
 
@@ -123,17 +123,17 @@ function RegisterPage() {
 
       if (result.success) {
         setIsSuccess(true)
-        setMessage('✅ ' + result.message)
+        setMessage(' ' + result.message)
         setTimeout(() => {
           navigate('/dashboard')
         }, 2000)
       } else {
         setIsSuccess(false)
-        setMessage('❌ ' + result.message)
+        setMessage(' ' + result.message)
       }
     } catch (error) {
       setIsSuccess(false)
-      setMessage('❌ Something went wrong.')
+      setMessage(' Something went wrong.')
     } finally {
       setIsLoading(false)
     }

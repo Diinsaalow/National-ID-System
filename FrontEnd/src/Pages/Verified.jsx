@@ -24,7 +24,7 @@ function VerifiedUsers() {
         setLoading(false)
       } catch (err) {
         console.error(err)
-        toast.error('❌ Failed to load verified users')
+        toast.error(' Failed to load verified users')
         setLoading(false)
       }
     }
@@ -47,11 +47,11 @@ function VerifiedUsers() {
         subject: subject,
         message: message,
       })
-      toast.success(`✅ Email sent to ${selectedUser.fullName}`)
+      toast.success(` Email sent to ${selectedUser.fullName}`)
       setShowModal(false)
     } catch (error) {
       console.error(error)
-      toast.error('❌ Failed to send email')
+      toast.error(' Failed to send email')
     }
   }
 

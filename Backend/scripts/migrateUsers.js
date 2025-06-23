@@ -15,13 +15,13 @@ const migrateUsers = async () => {
       }
     )
 
-    console.log('✅ Connected to MongoDB')
+    console.log(' Connected to MongoDB')
 
     // Check if admin user already exists
     const existingAdmin = await User.findOne({ email: 'n@nira.so' })
 
     if (existingAdmin) {
-      console.log('✅ Admin user already exists, skipping migration')
+      console.log(' Admin user already exists, skipping migration')
       return
     }
 
@@ -37,14 +37,14 @@ const migrateUsers = async () => {
     })
 
     await adminUser.save()
-    console.log('✅ Admin user migrated successfully')
+    console.log(' Admin user migrated successfully')
 
-    console.log('✅ Migration completed successfully')
+    console.log(' Migration completed successfully')
   } catch (error) {
-    console.error('❌ Migration error:', error)
+    console.error(' Migration error:', error)
   } finally {
     await mongoose.disconnect()
-    console.log('✅ Disconnected from MongoDB')
+    console.log(' Disconnected from MongoDB')
   }
 }
 

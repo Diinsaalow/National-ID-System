@@ -19,7 +19,7 @@ const Settings = () => {
       const res = await axios.get('/api/users')
       setUsers(res.data)
     } catch (error) {
-      toast.error('❌ Failed to load users')
+      toast.error(' Failed to load users')
     }
   }
 
@@ -43,13 +43,13 @@ const Settings = () => {
       } else {
         await axios.post('/api/users', formData)
         toast.success(`${formData.role} added successfully`)
-        // ✅ Mark flag to refresh Home stats
+        //  Mark flag to refresh Home stats
         localStorage.setItem('refreshStats', 'true')
       }
       setFormData({ fullName: '', email: '', role: 'Reviewer' })
       fetchUsers()
     } catch (err) {
-      toast.error('❌ Error saving user')
+      toast.error(' Error saving user')
     }
   }
 
@@ -69,7 +69,7 @@ const Settings = () => {
       toast.success('User deleted successfully')
       fetchUsers()
     } catch (err) {
-      toast.error('❌ Error deleting user')
+      toast.error(' Error deleting user')
     }
   }
 

@@ -18,7 +18,7 @@ function PendingRequests() {
       const combined = [...birthsRes.data, ...idsRes.data]
       setRequests(combined)
     } catch (err) {
-      toast.error('❌ Failed to load pending records')
+      toast.error(' Failed to load pending records')
     }
   }
 
@@ -30,10 +30,10 @@ function PendingRequests() {
     try {
       const endpoint = type === 'ID Card' ? 'ids' : 'births'
       await axios.patch(`/api/${endpoint}/${id}/status`, { status: 'approved' })
-      toast.success('✅ Approved successfully')
+      toast.success(' Approved successfully')
       navigate('/verified-users')
     } catch {
-      toast.error('❌ Failed to approve')
+      toast.error(' Failed to approve')
     }
   }
 
@@ -46,10 +46,10 @@ function PendingRequests() {
         status: 'rejected',
         reason,
       })
-      toast.success('❌ Rejected successfully')
+      toast.success(' Rejected successfully')
       navigate('/rejected-cases')
     } catch {
-      toast.error('❌ Failed to reject')
+      toast.error(' Failed to reject')
     }
   }
 

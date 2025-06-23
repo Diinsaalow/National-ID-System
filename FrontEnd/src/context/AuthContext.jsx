@@ -116,15 +116,15 @@ export const AuthProvider = ({ children }) => {
         setToken(data.token)
         setUser(data.user)
 
-        toast.success('✅ Registration successful')
+        toast.success(' Registration successful')
         return { success: true, message: data.message }
       } else {
-        toast.error(`❌ ${data.message}`)
+        toast.error(` ${data.message}`)
         return { success: false, message: data.message }
       }
     } catch (error) {
       console.error('Registration error:', error)
-      toast.error('❌ Network error. Please try again.')
+      toast.error(' Network error. Please try again.')
       return { success: false, message: 'Network error. Please try again.' }
     }
   }
@@ -145,15 +145,15 @@ export const AuthProvider = ({ children }) => {
 
       if (response.ok) {
         setUser(data.user)
-        toast.success('✅ Profile updated successfully')
+        toast.success(' Profile updated successfully')
         return { success: true, message: data.message }
       } else {
-        toast.error(`❌ ${data.message}`)
+        toast.error(` ${data.message}`)
         return { success: false, message: data.message }
       }
     } catch (error) {
       console.error('Profile update error:', error)
-      toast.error('❌ Network error. Please try again.')
+      toast.error(' Network error. Please try again.')
       return { success: false, message: 'Network error. Please try again.' }
     }
   }
@@ -173,15 +173,15 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json()
 
       if (response.ok) {
-        toast.success('✅ Password changed successfully')
+        toast.success(' Password changed successfully')
         return { success: true, message: data.message }
       } else {
-        toast.error(`❌ ${data.message}`)
+        toast.error(` ${data.message}`)
         return { success: false, message: data.message }
       }
     } catch (error) {
       console.error('Password change error:', error)
-      toast.error('❌ Network error. Please try again.')
+      toast.error(' Network error. Please try again.')
       return { success: false, message: 'Network error. Please try again.' }
     }
   }

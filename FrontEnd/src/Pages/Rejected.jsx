@@ -21,7 +21,7 @@ function RejectedCases() {
         ])
         setRejected([...births.data, ...ids.data])
       } catch {
-        toast.error('❌ Failed to load rejected records')
+        toast.error(' Failed to load rejected records')
       }
     }
     loadAllRejected()
@@ -53,7 +53,7 @@ function RejectedCases() {
       setShowModal(false)
     } catch (err) {
       console.error(err)
-      toast.error('❌ Failed to send email')
+      toast.error(' Failed to send email')
     }
   }
 

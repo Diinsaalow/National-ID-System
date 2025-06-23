@@ -51,14 +51,14 @@ function UserProfile() {
 
   const validateProfileForm = () => {
     if (!profileData.fullName.trim()) {
-      setMessage('❌ Full name is required')
+      setMessage(' Full name is required')
       setIsSuccess(false)
       return false
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(profileData.email)) {
-      setMessage('❌ Please enter a valid email address')
+      setMessage(' Please enter a valid email address')
       setIsSuccess(false)
       return false
     }
@@ -72,19 +72,19 @@ function UserProfile() {
       !passwordData.newPassword ||
       !passwordData.confirmPassword
     ) {
-      setMessage('❌ All password fields are required')
+      setMessage(' All password fields are required')
       setIsSuccess(false)
       return false
     }
 
     if (passwordData.newPassword.length < 6) {
-      setMessage('❌ New password must be at least 6 characters long')
+      setMessage(' New password must be at least 6 characters long')
       setIsSuccess(false)
       return false
     }
 
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      setMessage('❌ New passwords do not match')
+      setMessage(' New passwords do not match')
       setIsSuccess(false)
       return false
     }
@@ -107,14 +107,14 @@ function UserProfile() {
 
       if (result.success) {
         setIsSuccess(true)
-        setMessage('✅ ' + result.message)
+        setMessage(' ' + result.message)
       } else {
         setIsSuccess(false)
-        setMessage('❌ ' + result.message)
+        setMessage(' ' + result.message)
       }
     } catch (error) {
       setIsSuccess(false)
-      setMessage('❌ Something went wrong.')
+      setMessage(' Something went wrong.')
     } finally {
       setIsLoading(false)
     }
@@ -138,7 +138,7 @@ function UserProfile() {
 
       if (result.success) {
         setIsSuccess(true)
-        setMessage('✅ ' + result.message)
+        setMessage(' ' + result.message)
         // Clear password fields
         setPasswordData({
           currentPassword: '',
@@ -147,11 +147,11 @@ function UserProfile() {
         })
       } else {
         setIsSuccess(false)
-        setMessage('❌ ' + result.message)
+        setMessage(' ' + result.message)
       }
     } catch (error) {
       setIsSuccess(false)
-      setMessage('❌ Something went wrong.')
+      setMessage(' Something went wrong.')
     } finally {
       setIsLoading(false)
     }

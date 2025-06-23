@@ -68,7 +68,7 @@ export default function AddBirth() {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
 
-      toast.success('✅ Birth record submitted!')
+      toast.success(' Birth record submitted!')
       window.dispatchEvent(new Event('birth-record-added'))
 
       setFormData({
@@ -89,7 +89,7 @@ export default function AddBirth() {
     } catch (error) {
       console.error(error.response?.data || error.message)
       toast.error(
-        error.response?.data?.message || '❌ Failed to submit. Try again!'
+        error.response?.data?.message || ' Failed to submit. Try again!'
       )
     }
   }

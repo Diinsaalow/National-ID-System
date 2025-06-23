@@ -16,23 +16,23 @@ const testAuth = async () => {
       }
     )
 
-    console.log('✅ Connected to MongoDB')
+    console.log(' Connected to MongoDB')
 
     // Test password hashing
     console.log('\n🔐 Testing password hashing...')
     const password = 'testpassword123'
     const hashedPassword = await hashPassword(password)
-    console.log('✅ Password hashed successfully')
+    console.log(' Password hashed successfully')
 
     // Test password comparison
     const isMatch = await comparePassword(password, hashedPassword)
-    console.log('✅ Password comparison:', isMatch ? 'SUCCESS' : 'FAILED')
+    console.log(' Password comparison:', isMatch ? 'SUCCESS' : 'FAILED')
 
     // Test JWT token generation
     console.log('\n🎫 Testing JWT token generation...')
     const testUserId = new mongoose.Types.ObjectId()
     const token = generateToken(testUserId)
-    console.log('✅ JWT token generated:', token.substring(0, 20) + '...')
+    console.log(' JWT token generated:', token.substring(0, 20) + '...')
 
     // Test user creation
     console.log('\n👤 Testing user creation...')
@@ -45,24 +45,24 @@ const testAuth = async () => {
     })
 
     await testUser.save()
-    console.log('✅ Test user created successfully')
+    console.log(' Test user created successfully')
 
     // Test user retrieval
     const foundUser = await User.findOne({ email: 'test@example.com' }).select(
       '-password'
     )
-    console.log('✅ User retrieved:', foundUser.username)
+    console.log(' User retrieved:', foundUser.username)
 
     // Clean up test user
     await User.deleteOne({ email: 'test@example.com' })
-    console.log('✅ Test user cleaned up')
+    console.log(' Test user cleaned up')
 
     console.log('\n🎉 All authentication tests passed!')
   } catch (error) {
-    console.error('❌ Test error:', error)
+    console.error(' Test error:', error)
   } finally {
     await mongoose.disconnect()
-    console.log('✅ Disconnected from MongoDB')
+    console.log(' Disconnected from MongoDB')
   }
 }
 

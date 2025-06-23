@@ -19,9 +19,9 @@
 //       status: 'approved'
 //     });
 //     await record.save();
-//     res.status(201).json({ message: '✅ Birth record submitted and approved.', data: record });
+//     res.status(201).json({ message: ' Birth record submitted and approved.', data: record });
 //   } catch (err) {
-//     res.status(500).json({ message: '❌ Failed to save birth record', error: err.message });
+//     res.status(500).json({ message: ' Failed to save birth record', error: err.message });
 //   }
 // });
 
@@ -31,7 +31,7 @@
 //     const approved = await BirthRecord.find({ status: 'approved' });
 //     res.json(approved);
 //   } catch (err) {
-//     res.status(500).json({ message: '❌ Failed to fetch records' });
+//     res.status(500).json({ message: ' Failed to fetch records' });
 //   }
 // });
 
