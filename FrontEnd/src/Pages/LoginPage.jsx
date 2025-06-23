@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   FaFacebook,
   FaPhone,
@@ -10,66 +10,66 @@ import {
   FaTimesCircle,
   FaEye,
   FaEyeSlash,
-} from 'react-icons/fa';
+} from 'react-icons/fa'
 
 const images = [
   'https://nira.gov.so/_next/static/media/residence-id.e57faa24.jpg',
   'https://pbs.twimg.com/media/F6IguNlWUAACGyE.jpg:large',
   'https://d1sr9z1pdl3mb7.cloudfront.net/wp-content/uploads/2024/08/19150604/somalia-NIRA-national-digial-ID.png',
-];
+]
 
 function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [imageIndex, setImageIndex] = useState(0);
-  const [message, setMessage] = useState('');
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate();
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [imageIndex, setImageIndex] = useState(0)
+  const [message, setMessage] = useState('')
+  const [isSuccess, setIsSuccess] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setImageIndex((prev) => (prev + 1) % images.length);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, []);
+      setImageIndex((prev) => (prev + 1) % images.length)
+    }, 4000)
+    return () => clearInterval(interval)
+  }, [])
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     if (!navigator.onLine) {
-      setIsSuccess(false);
-      setMessage('❌ Please connect to the Internet.');
-      return;
+      setIsSuccess(false)
+      setMessage('❌ Please connect to the Internet.')
+      return
     }
 
     try {
-      const res = await fetch('http://localhost:5000/api/auth/login', {
+      const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
-      });
+      })
 
-      const data = await res.json();
+      const data = await res.json()
 
       if (res.ok) {
-        setIsSuccess(true);
-        setMessage('✅ ' + data.message);
+        setIsSuccess(true)
+        setMessage('✅ ' + data.message)
         setTimeout(() => {
-          navigate('/dashboard');
-        }, 2000);
+          navigate('/dashboard')
+        }, 2000)
       } else {
-        setIsSuccess(false);
-        setMessage('❌ ' + data.message);
+        setIsSuccess(false)
+        setMessage('❌ ' + data.message)
       }
     } catch (error) {
-      setIsSuccess(false);
-      setMessage('❌ Something went wrong.');
+      setIsSuccess(false)
+      setMessage('❌ Something went wrong.')
     }
-  };
+  }
 
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-gray-100">
+    <div className='min-h-screen flex flex-col justify-between bg-gray-100'>
       {/* Message alert */}
       {message && (
         <div
@@ -77,40 +77,44 @@ function LoginPage() {
             isSuccess ? 'bg-green-600' : 'bg-red-600'
           }`}
         >
-          <div className="flex items-center gap-2">
-            {isSuccess ? <FaCheckCircle className="text-xl" /> : <FaTimesCircle className="text-xl" />}
+          <div className='flex items-center gap-2'>
+            {isSuccess ? (
+              <FaCheckCircle className='text-xl' />
+            ) : (
+              <FaTimesCircle className='text-xl' />
+            )}
             <span>{message}</span>
           </div>
         </div>
       )}
 
-      <div className="flex flex-1 flex-col md:flex-row">
+      <div className='flex flex-1 flex-col md:flex-row'>
         {/* Left side with slideshow */}
-        <div className="md:w-1/2 w-full h-[300px] md:h-auto">
+        <div className='md:w-1/2 w-full h-[300px] md:h-auto'>
           <img
             src={images[imageIndex]}
-            alt="Slideshow"
-            className="w-full h-full object-cover transition-all duration-1000"
+            alt='Slideshow'
+            className='w-full h-full object-cover transition-all duration-1000'
           />
         </div>
 
         {/* Right side with form */}
-        <div className="md:w-1/2 w-full flex items-center justify-center bg-gray-50 px-6 py-12">
+        <div className='md:w-1/2 w-full flex items-center justify-center bg-gray-50 px-6 py-12'>
           <form
             onSubmit={handleSubmit}
-            className="bg-white p-10 rounded-3xl shadow-2xl w-full max-w-xl space-y-6 animate-fade-in-up"
+            className='bg-white p-10 rounded-3xl shadow-2xl w-full max-w-xl space-y-6 animate-fade-in-up'
           >
-            <h2 className="text-3xl font-bold text-center text-gray-800">
+            <h2 className='text-3xl font-bold text-center text-gray-800'>
               Welcome to NIRA ID Verification - Somalia
             </h2>
 
             {/* Email */}
-            <div className="relative">
-              <FaEnvelope className="absolute top-3 left-3 text-gray-400" />
+            <div className='relative'>
+              <FaEnvelope className='absolute top-3 left-3 text-gray-400' />
               <input
-                type="email"
-                placeholder="Enter your email"
-                className="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                type='email'
+                placeholder='Enter your email'
+                className='w-full pl-10 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400'
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -118,18 +122,18 @@ function LoginPage() {
             </div>
 
             {/* Password */}
-            <div className="relative">
-              <FaLock className="absolute top-3 left-3 text-gray-400" />
+            <div className='relative'>
+              <FaLock className='absolute top-3 left-3 text-gray-400' />
               <input
                 type={showPassword ? 'text' : 'password'}
-                placeholder="Enter your password"
-                className="w-full pl-10 pr-10 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                placeholder='Enter your password'
+                className='w-full pl-10 pr-10 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400'
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
               <span
-                className="absolute top-3 right-3 text-gray-500 cursor-pointer"
+                className='absolute top-3 right-3 text-gray-500 cursor-pointer'
                 onClick={() => setShowPassword(!showPassword)}
                 title={showPassword ? 'Hide password' : 'Show password'}
               >
@@ -138,8 +142,8 @@ function LoginPage() {
             </div>
 
             <button
-              type="submit"
-              className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300"
+              type='submit'
+              className='w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300'
             >
               Login
             </button>
@@ -148,20 +152,24 @@ function LoginPage() {
       </div>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-4 flex justify-center gap-6 items-center text-sm md:text-base">
+      <footer className='bg-gray-900 text-white py-4 flex justify-center gap-6 items-center text-sm md:text-base'>
         <p>Developed by Sadam Hussein Mohamed</p>
-        <a href="https://www.facebook.com/share/v/1ASXmgEYcK/" target="_blank" rel="noopener noreferrer">
-          <FaFacebook className="text-2xl hover:text-blue-400" />
+        <a
+          href='https://www.facebook.com/share/v/1ASXmgEYcK/'
+          target='_blank'
+          rel='noopener noreferrer'
+        >
+          <FaFacebook className='text-2xl hover:text-blue-400' />
         </a>
-        <a href="tel:+252619818501">
-          <FaPhone className="text-2xl hover:text-green-400" />
+        <a href='tel:+252619818501'>
+          <FaPhone className='text-2xl hover:text-green-400' />
         </a>
-        <a href="https://nira.gov.so" target="_blank" rel="noopener noreferrer">
-          <FaGlobe className="text-2xl hover:text-yellow-400" />
+        <a href='https://nira.gov.so' target='_blank' rel='noopener noreferrer'>
+          <FaGlobe className='text-2xl hover:text-yellow-400' />
         </a>
       </footer>
     </div>
-  );
+  )
 }
 
-export default LoginPage;
+export default LoginPage
