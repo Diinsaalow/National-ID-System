@@ -1,23 +1,26 @@
 // server/routes/auth.js
-const express = require('express');
-const router = express.Router();
-const users = require('../data/users');
-const bcrypt = require('bcrypt');
+const express = require('express')
+const router = express.Router()
+const authController = require('../controllers/authController')
+const auth = require('../middleware/auth')
+const {
+  validateRegistration,
+  validateLogin,
+  validatePasswordChange,
+} = require('../middleware/validation')
 
-router.post('/login', (req, res) => {
-  const { email, password } = req.body;
+// Public routes
+router.post('/register', validateRegistration, authController.register)
+router.post('/login', validateLogin, authController.login)
 
-  const user = users.find((u) => u.email === email);
-  if (!user) {
-    return res.status(401).json({ message: 'Email not found.' });
-  }
+// Protected routes (require authentication)
+router.get('/me', auth, authController.getCurrentUser)
+router.put('/profile', auth, authController.updateProfile)
+router.put(
+  '/change-password',
+  auth,
+  validatePasswordChange,
+  authController.changePassword
+)
 
-  const isMatch = bcrypt.compareSync(password, user.password);
-  if (!isMatch) {
-    return res.status(401).json({ message: 'Incorrect password.' });
-  }
-
-  res.json({ message: 'Login successful', name: user.name });
-});
-
-module.exports = router;
+module.exports = router
