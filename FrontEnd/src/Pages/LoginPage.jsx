@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 import {
   FaFacebook,
   FaPhone,
@@ -25,14 +26,22 @@ function LoginPage() {
   const [message, setMessage] = useState('')
   const [isSuccess, setIsSuccess] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
+  const { login, isAuthenticated } = useAuth()
 
   useEffect(() => {
+    // Redirect if already authenticated
+    if (isAuthenticated()) {
+      navigate('/dashboard')
+      return
+    }
+
     const interval = setInterval(() => {
       setImageIndex((prev) => (prev + 1) % images.length)
     }, 4000)
     return () => clearInterval(interval)
-  }, [])
+  }, [navigate, isAuthenticated])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -43,28 +52,27 @@ function LoginPage() {
       return
     }
 
+    setIsLoading(true)
+    setMessage('')
+
     try {
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      })
+      const result = await login(email, password)
 
-      const data = await res.json()
-
-      if (res.ok) {
+      if (result.success) {
         setIsSuccess(true)
-        setMessage('✅ ' + data.message)
+        setMessage('✅ ' + result.message)
         setTimeout(() => {
           navigate('/dashboard')
         }, 2000)
       } else {
         setIsSuccess(false)
-        setMessage('❌ ' + data.message)
+        setMessage('❌ ' + result.message)
       }
     } catch (error) {
       setIsSuccess(false)
       setMessage('❌ Something went wrong.')
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -118,6 +126,7 @@ function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                disabled={isLoading}
               />
             </div>
 
@@ -131,6 +140,7 @@ function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                disabled={isLoading}
               />
               <span
                 className='absolute top-3 right-3 text-gray-500 cursor-pointer'
@@ -143,10 +153,28 @@ function LoginPage() {
 
             <button
               type='submit'
-              className='w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300'
+              className={`w-full py-3 rounded-lg font-semibold transition duration-300 ${
+                isLoading
+                  ? 'bg-gray-400 cursor-not-allowed'
+                  : 'bg-blue-600 hover:bg-blue-700 text-white'
+              }`}
+              disabled={isLoading}
             >
-              Login
+              {isLoading ? 'Logging in...' : 'Login'}
             </button>
+
+            {/* Registration Link */}
+            <div className='text-center'>
+              <p className='text-gray-600'>
+                Don't have an account?{' '}
+                <Link
+                  to='/register'
+                  className='text-blue-600 hover:text-blue-700 font-semibold'
+                >
+                  Register here
+                </Link>
+              </p>
+            </div>
           </form>
         </div>
       </div>

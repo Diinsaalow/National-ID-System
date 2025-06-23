@@ -1,16 +1,26 @@
-import React from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import React from 'react'
+import { Navigate, Outlet } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 
-// Example: Replace this with your actual authentication logic
-const isAuthenticated = () => {
-    return !!localStorage.getItem("token");
-};
+const ProtectedRoute = ({ redirectPath = '/' }) => {
+  const { isAuthenticated, loading } = useAuth()
 
-const ProtectedRoute = ({ redirectPath = "/login" }) => {
-    if (!isAuthenticated()) {
-        return <Navigate to={redirectPath} replace />;
-    }
-    return <Outlet />;
-};
+  // Show loading spinner while checking authentication
+  if (loading) {
+    return (
+      <div className='min-h-screen flex items-center justify-center bg-gray-100'>
+        <div className='animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600'></div>
+      </div>
+    )
+  }
 
-export default ProtectedRoute;
+  // Redirect to login if not authenticated
+  if (!isAuthenticated()) {
+    return <Navigate to={redirectPath} replace />
+  }
+
+  // Render protected content
+  return <Outlet />
+}
+
+export default ProtectedRoute
