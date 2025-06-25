@@ -188,6 +188,110 @@ Change user password.
 }
 ```
 
+## Dashboard Statistics API
+
+### GET /api/users/stats
+
+Get comprehensive dashboard statistics for the admin panel. This endpoint provides real-time metrics about the system's usage, including user counts, document statuses, and daily activity.
+
+**Authentication:** No authentication required (but can be protected if needed)
+
+**Response:**
+
+```json
+{
+  "birthRecords": 150,
+  "idRecords": 89,
+  "verifiedUsers": 180,
+  "rejectedCases": 12,
+  "deathRecords": 0,
+  "todaysIDRequests": 5,
+  "todaysDeathRequests": 0,
+  "docsAwaitingApproval": 23,
+  "docsAboutToExpire": 8,
+  "newUsersToday": 3,
+  "totalAdmins": 2,
+  "totalReviewers": 8,
+  "totalUsers": 45,
+  "male": 75,
+  "female": 65,
+  "todaysBirthRequests": 7
+}
+```
+
+**Response Fields:**
+
+- `birthRecords`: Total number of birth certificate records in the system
+- `idRecords`: Total number of ID card records in the system
+- `verifiedUsers`: Combined count of verified birth certificates and approved ID cards
+- `rejectedCases`: Combined count of rejected birth certificates and ID cards
+- `deathRecords`: Total death records (placeholder, currently 0)
+- `todaysIDRequests`: Number of ID card requests submitted today
+- `todaysDeathRequests`: Number of death record requests submitted today (placeholder, currently 0)
+- `docsAwaitingApproval`: Total pending documents (birth certificates + ID cards) awaiting approval
+- `docsAboutToExpire`: Number of verified birth certificates expiring within 30 days
+- `newUsersToday`: Number of new users registered today
+- `totalAdmins`: Total number of admin users in the system
+- `totalReviewers`: Total number of reviewer users in the system
+- `totalUsers`: Total number of users in the system
+- `male`: Number of male citizens (from birth records)
+- `female`: Number of female citizens (from birth records)
+- `todaysBirthRequests`: Number of birth certificate requests submitted today
+
+**Error Response:**
+
+```json
+{
+  "birthRecords": 0,
+  "idRecords": 0,
+  "verifiedUsers": 0,
+  "rejectedCases": 0,
+  "deathRecords": 0,
+  "todaysIDRequests": 0,
+  "todaysDeathRequests": 0,
+  "docsAwaitingApproval": 0,
+  "docsAboutToExpire": 0,
+  "newUsersToday": 0,
+  "totalAdmins": 0,
+  "totalReviewers": 0,
+  "totalUsers": 0,
+  "male": 0,
+  "female": 0,
+  "todaysBirthRequests": 0,
+  "error": "Stats fetch failed"
+}
+```
+
+**Frontend Integration Example:**
+
+```javascript
+// Fetch dashboard statistics
+const fetchDashboardStats = async () => {
+  try {
+    const response = await axios.get("/api/users/stats");
+    setStats(response.data);
+  } catch (error) {
+    console.error("Error fetching dashboard stats:", error);
+    // Fallback values will be returned by the API
+  }
+};
+
+// Use in React component
+useEffect(() => {
+  fetchDashboardStats();
+  // Optionally refresh stats periodically
+  const interval = setInterval(fetchDashboardStats, 30000); // Every 30 seconds
+  return () => clearInterval(interval);
+}, []);
+```
+
+**Performance Features:**
+
+- Uses `Promise.all()` for parallel database queries
+- Optimized MongoDB aggregation queries
+- Caches results for improved response times
+- Graceful error handling with fallback values
+
 ## Security Features
 
 ### Password Security
@@ -251,34 +355,34 @@ The system provides comprehensive error handling:
 ```javascript
 // Login
 const login = async (email, password) => {
-  const response = await fetch('/api/auth/login', {
-    method: 'POST',
+  const response = await fetch("/api/auth/login", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({ email, password }),
-  })
+  });
 
-  const data = await response.json()
+  const data = await response.json();
   if (response.ok) {
-    localStorage.setItem('token', data.token)
-    return data.user
+    localStorage.setItem("token", data.token);
+    return data.user;
   } else {
-    throw new Error(data.message)
+    throw new Error(data.message);
   }
-}
+};
 
 // Protected API call
 const fetchProtectedData = async () => {
-  const token = localStorage.getItem('token')
-  const response = await fetch('/api/protected-route', {
+  const token = localStorage.getItem("token");
+  const response = await fetch("/api/protected-route", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
-  })
+  });
 
-  return response.json()
-}
+  return response.json();
+};
 ```
 
 ## Best Practices
