@@ -1,5 +1,5 @@
 const IDCard = require('../models/IDCard')
-const BirthRecord = require('../models/BirthRecord')
+const Birth = require('../models/Birth')
 
 // Get all verified citizen records (both ID cards and birth records)
 const getAllCitizens = async (req, res) => {
@@ -7,8 +7,8 @@ const getAllCitizens = async (req, res) => {
     // Fetch verified ID cards
     const verifiedIDs = await IDCard.find({ status: 'approved' })
 
-    // Fetch verified birth records
-    const verifiedBirths = await BirthRecord.find({ status: 'approved' })
+    // Fetch verified birth records (using Birth model with 'verified' status)
+    const verifiedBirths = await Birth.find({ status: 'verified' })
 
     // Transform ID cards to match the expected format
     const transformedIDs = verifiedIDs.map((id) => ({
@@ -95,7 +95,7 @@ const getVerifiedIDs = async (req, res) => {
 // Get only verified birth records
 const getVerifiedBirths = async (req, res) => {
   try {
-    const verifiedBirths = await BirthRecord.find({ status: 'approved' })
+    const verifiedBirths = await Birth.find({ status: 'verified' })
 
     // Transform to match expected format
     const transformedBirths = verifiedBirths.map((birth) => ({

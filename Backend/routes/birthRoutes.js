@@ -20,6 +20,63 @@ const upload = multer({ storage: multer.memoryStorage() })
 /*  POST: Submit new birth certificate */
 router.post('/', upload.single('photo'), submitBirth)
 
+/*  PUT: Update birth record by ID */
+router.put('/:id', upload.single('photo'), async (req, res) => {
+  try {
+    const { id } = req.params
+    const updateData = { ...req.body }
+
+    // Handle photo upload if provided
+    if (req.file) {
+      updateData.photo = req.file.buffer.toString('base64')
+    }
+
+    const updatedBirth = await Birth.findByIdAndUpdate(id, updateData, {
+      new: true,
+      runValidators: true,
+    })
+
+    if (!updatedBirth) {
+      return res.status(404).json({ message: 'Birth record not found' })
+    }
+
+    res.json({
+      message: 'Birth record updated successfully',
+      data: updatedBirth,
+    })
+  } catch (error) {
+    console.error('Error updating birth record:', error)
+    res.status(500).json({
+      message: 'Failed to update birth record',
+      error: error.message,
+    })
+  }
+})
+
+/*  DELETE: Delete birth record by ID */
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params
+
+    const deletedBirth = await Birth.findByIdAndDelete(id)
+
+    if (!deletedBirth) {
+      return res.status(404).json({ message: 'Birth record not found' })
+    }
+
+    res.json({
+      message: 'Birth record deleted successfully',
+      data: deletedBirth,
+    })
+  } catch (error) {
+    console.error('Error deleting birth record:', error)
+    res.status(500).json({
+      message: 'Failed to delete birth record',
+      error: error.message,
+    })
+  }
+})
+
 /*  GET: All pending birth certificates */
 router.get('/pending', getPending)
 

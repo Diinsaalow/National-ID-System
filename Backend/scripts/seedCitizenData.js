@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const IDCard = require('../models/IDCard')
-const BirthRecord = require('../models/BirthRecord')
+const Birth = require('../models/Birth')
 require('dotenv').config()
 
 // Connect to MongoDB
@@ -68,7 +68,7 @@ const sampleIDCards = [
   },
 ]
 
-// Sample Birth Record data
+// Sample Birth Record data for Birth model (with verified status)
 const sampleBirthRecords = [
   {
     IDNumber: 'BR001234567',
@@ -83,7 +83,9 @@ const sampleBirthRecords = [
     county: 'Banaadir',
     email: 'amina.mohamed@email.com',
     photo: '/uploads/sample-photo-4.jpg',
-    status: 'approved',
+    photoHash: 'hash_br_001_1234567',
+    status: 'verified',
+    type: 'Birth Certificate',
   },
   {
     IDNumber: 'BR001234568',
@@ -98,7 +100,9 @@ const sampleBirthRecords = [
     county: 'Bari',
     email: 'khalid.abdi@email.com',
     photo: '/uploads/sample-photo-5.jpg',
-    status: 'approved',
+    photoHash: 'hash_br_002_1234568',
+    status: 'verified',
+    type: 'Birth Certificate',
   },
   {
     IDNumber: 'BR001234569',
@@ -113,7 +117,9 @@ const sampleBirthRecords = [
     county: 'Bay',
     email: 'hodan.yusuf@email.com',
     photo: '/uploads/sample-photo-6.jpg',
-    status: 'approved',
+    photoHash: 'hash_br_003_1234569',
+    status: 'verified',
+    type: 'Birth Certificate',
   },
 ]
 
@@ -122,7 +128,7 @@ const seedData = async () => {
   try {
     // Clear existing data
     await IDCard.deleteMany({})
-    await BirthRecord.deleteMany({})
+    await Birth.deleteMany({})
 
     console.log('Cleared existing data')
 
@@ -131,9 +137,7 @@ const seedData = async () => {
     console.log(`Inserted ${insertedIDCards.length} ID cards`)
 
     // Insert sample birth records
-    const insertedBirthRecords = await BirthRecord.insertMany(
-      sampleBirthRecords
-    )
+    const insertedBirthRecords = await Birth.insertMany(sampleBirthRecords)
     console.log(`Inserted ${insertedBirthRecords.length} birth records`)
 
     console.log('Sample data seeded successfully!')

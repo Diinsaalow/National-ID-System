@@ -38,6 +38,63 @@ router.post('/', upload.single('photoFile'), async (req, res) => {
   }
 })
 
+//  PUT: Update ID card by ID
+router.put('/:id', upload.single('photoFile'), async (req, res) => {
+  try {
+    const { id } = req.params
+    const updateData = { ...req.body }
+
+    // Handle photo upload if provided
+    if (req.file) {
+      updateData.photoPath = `/uploads/${req.file.filename}`
+    }
+
+    const updatedID = await IDCard.findByIdAndUpdate(id, updateData, {
+      new: true,
+      runValidators: true,
+    })
+
+    if (!updatedID) {
+      return res.status(404).json({ message: 'ID card not found' })
+    }
+
+    res.json({
+      message: 'ID card updated successfully',
+      data: updatedID,
+    })
+  } catch (error) {
+    console.error('Error updating ID card:', error)
+    res.status(500).json({
+      message: 'Failed to update ID card',
+      error: error.message,
+    })
+  }
+})
+
+//  DELETE: Delete ID card by ID
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params
+
+    const deletedID = await IDCard.findByIdAndDelete(id)
+
+    if (!deletedID) {
+      return res.status(404).json({ message: 'ID card not found' })
+    }
+
+    res.json({
+      message: 'ID card deleted successfully',
+      data: deletedID,
+    })
+  } catch (error) {
+    console.error('Error deleting ID card:', error)
+    res.status(500).json({
+      message: 'Failed to delete ID card',
+      error: error.message,
+    })
+  }
+})
+
 //  PATCH: Update status (approve/reject)
 router.patch('/:id/status', async (req, res) => {
   const { status, reason } = req.body
