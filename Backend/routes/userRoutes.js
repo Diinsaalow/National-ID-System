@@ -1,41 +1,42 @@
 // File: routes/userRoutes.js
 
-const express = require("express");
-const router = express.Router();
-const User = require("../models/User");
-const Birth = require("../models/Birth");
-const IDCard = require("../models/IDCard");
+const express = require('express')
+const router = express.Router()
+const User = require('../models/User')
+const Birth = require('../models/Birth')
+const IDCard = require('../models/IDCard')
+const DeathRecord = require('../models/DeathRecord')
 
 // ➕ Add new user
-router.post("/", async (req, res) => {
+router.post('/', async (req, res) => {
   try {
-    const user = new User(req.body);
-    await user.save();
-    console.log(` User saved: ${user.fullName} (${user.role})`);
-    res.status(201).json(user);
+    const user = new User(req.body)
+    await user.save()
+    console.log(` User saved: ${user.fullName} (${user.role})`)
+    res.status(201).json(user)
   } catch (err) {
-    console.error(" Error saving user:", err);
-    res.status(400).json({ error: err.message });
+    console.error(' Error saving user:', err)
+    res.status(400).json({ error: err.message })
   }
-});
+})
 
 // 📄 Get all users
-router.get("/", async (req, res) => {
+router.get('/', async (req, res) => {
   try {
-    const users = await User.find().sort({ createdAt: -1 });
-    res.json(users);
+    const users = await User.find().sort({ createdAt: -1 })
+    res.json(users)
   } catch (err) {
-    res.status(500).json({ error: "Failed to fetch users" });
+    res.status(500).json({ error: 'Failed to fetch users' })
   }
-});
+})
 
 // 📊 Get comprehensive dashboard stats
-router.get("/stats", async (req, res) => {
+router.get('/stats', async (req, res) => {
   try {
-    const start = new Date();
-    start.setHours(0, 0, 0, 0);
-    const end = new Date();
-    end.setHours(23, 59, 59, 999);
+    const start = new Date()
+    start.setHours(0, 0, 0, 0)
+    const end = new Date()
+    end.setHours(23, 59, 59, 999)
 
     // Get all statistics in parallel for better performance
     const [
@@ -62,50 +63,54 @@ router.get("/stats", async (req, res) => {
 
       // Pending documents (awaiting approval)
       pendingBirthRecords,
+
+      // Death records statistics
+      totalDeathRecords,
+      todaysDeathRequests,
     ] = await Promise.all([
       // User queries
       User.countDocuments({ createdAt: { $gte: start, $lte: end } }),
-      User.countDocuments({ role: "Admin" }),
-      User.countDocuments({ role: "Reviewer" }),
+      User.countDocuments({ role: 'Admin' }),
+      User.countDocuments({ role: 'Reviewer' }),
       User.countDocuments({}),
 
       // Birth records queries
       Birth.countDocuments({}),
-      Birth.countDocuments({ status: "verified" }),
-      Birth.countDocuments({ status: "rejected" }),
+      Birth.countDocuments({ status: 'verified' }),
+      Birth.countDocuments({ status: 'rejected' }),
       Birth.countDocuments({ createdAt: { $gte: start, $lte: end } }),
       Birth.countDocuments({ gender: { $regex: /^male$/i } }),
       Birth.countDocuments({ gender: { $regex: /^female$/i } }),
 
       // ID records queries
       IDCard.countDocuments({}),
-      IDCard.countDocuments({ status: "approved" }),
-      IDCard.countDocuments({ status: "rejected" }),
+      IDCard.countDocuments({ status: 'approved' }),
+      IDCard.countDocuments({ status: 'rejected' }),
       IDCard.countDocuments({ createdAt: { $gte: start, $lte: end } }),
-      IDCard.countDocuments({ status: "pending" }),
+      IDCard.countDocuments({ status: 'pending' }),
 
       // Pending documents
-      Birth.countDocuments({ status: "pending" }),
-    ]);
+      Birth.countDocuments({ status: 'pending' }),
+
+      // Death records queries
+      DeathRecord.countDocuments({}),
+      DeathRecord.countDocuments({ dateOfDeath: { $gte: start, $lte: end } }),
+    ])
 
     // Calculate documents about to expire (birth records expiring within 30 days)
-    const thirtyDaysFromNow = new Date();
-    thirtyDaysFromNow.setDate(thirtyDaysFromNow.getDate() + 30);
+    const thirtyDaysFromNow = new Date()
+    thirtyDaysFromNow.setDate(thirtyDaysFromNow.getDate() + 30)
 
     const docsAboutToExpire = await Birth.countDocuments({
       dateOfExpiry: { $lte: thirtyDaysFromNow, $gte: new Date() },
-      status: "verified",
-    });
+      status: 'verified',
+    })
 
     // Total rejected cases (birth + ID)
-    const totalRejectedCases = rejectedBirthRecords + rejectedIDRecords;
+    const totalRejectedCases = rejectedBirthRecords + rejectedIDRecords
 
     // Total documents awaiting approval
-    const docsAwaitingApproval = pendingBirthRecords + pendingIDRecords;
-
-    // Death records (placeholder - no death model exists yet)
-    const deathRecords = 0;
-    const todaysDeathRequests = 0;
+    const docsAwaitingApproval = pendingBirthRecords + pendingIDRecords
 
     res.json({
       // Birth records
@@ -120,8 +125,8 @@ router.get("/stats", async (req, res) => {
       verifiedUsers: verifiedBirthRecords + verifiedIDRecords || 0,
       rejectedCases: totalRejectedCases || 0,
 
-      // Death records (placeholder)
-      deathRecords: deathRecords || 0,
+      // Death records
+      deathRecords: totalDeathRecords || 0,
       todaysDeathRequests: todaysDeathRequests || 0,
 
       // Document status
@@ -137,9 +142,9 @@ router.get("/stats", async (req, res) => {
       // Gender breakdown
       male: maleCitizens || 0,
       female: femaleCitizens || 0,
-    });
+    })
   } catch (err) {
-    console.error("📊 Error in /stats:", err);
+    console.error('📊 Error in /stats:', err)
     res.status(500).json({
       // Return default values on error
       birthRecords: 0,
@@ -158,34 +163,34 @@ router.get("/stats", async (req, res) => {
       male: 0,
       female: 0,
       todaysBirthRequests: 0,
-      error: "Stats fetch failed",
-    });
+      error: 'Stats fetch failed',
+    })
   }
-});
+})
 
 // 🖊️ Update user
-router.put("/:id", async (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
     const updated = await User.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
-    });
-    if (!updated) return res.status(404).json({ error: "User not found" });
-    res.json(updated);
+    })
+    if (!updated) return res.status(404).json({ error: 'User not found' })
+    res.json(updated)
   } catch (err) {
-    console.error(" PUT error:", err);
-    res.status(400).json({ error: err.message });
+    console.error(' PUT error:', err)
+    res.status(400).json({ error: err.message })
   }
-});
+})
 
 //  Delete user
-router.delete("/:id", async (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
-    const deleted = await User.findByIdAndDelete(req.params.id);
-    if (!deleted) return res.status(404).json({ error: "User not found" });
-    res.json({ message: "User deleted" });
+    const deleted = await User.findByIdAndDelete(req.params.id)
+    if (!deleted) return res.status(404).json({ error: 'User not found' })
+    res.json({ message: 'User deleted' })
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(400).json({ error: err.message })
   }
-});
+})
 
-module.exports = router;
+module.exports = router
