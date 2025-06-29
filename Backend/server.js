@@ -37,6 +37,7 @@ const idRoutes = require('./routes/ids')
 const notificationRoutes = require('./routes/notifications')
 const userRoutes = require('./routes/userRoutes')
 const sendEmailRoutes = require('./routes/sendEmail')
+const deathRoutes = require('./routes/deathRoutes')
 
 // ===== USE ROUTES =====
 app.use('/api/auth', authRoutes)
@@ -45,6 +46,7 @@ app.use('/api/ids', idRoutes)
 app.use('/api/notifications', notificationRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/send-email', sendEmailRoutes)
+app.use('/api/deaths', deathRoutes)
 
 // ===== TEST ROUTE =====
 app.get('/', (req, res) => {

@@ -19,3 +19,24 @@
     }
   }
 }
+
+/* Custom scrollbar for sidebar navigation */
+.sidebar-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #2563eb #1e293b;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  border-radius: 8px;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar-thumb {
+  background: #2563eb;
+  border-radius: 8px;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar-track {
+  background: #1e293b;
+  border-radius: 8px;
+}
